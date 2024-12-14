@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .exam {
+            margin: 15px 0;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .exam-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .countdown {
+            font-size: 1.1em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exam Countdown</h1>
+    <div id="exams"></div>
+
+    <script>
+        const exams = [
+            { name: "Sociology Paper 1", date: "2025-05-09T09:00:00" },
+            { name: "English Literature Paper 1", date: "2025-05-12T09:00:00" },
+            { name: "Biology Paper 1", date: "2025-05-13T09:00:00" },
+            { name: "Geography Paper 1", date: "2025-05-14T09:00:00" },
+            { name: "Economics Paper 1", date: "2025-05-14T11:00:00" },
+            { name: "Mathematics Paper 1", date: "2025-05-14T13:00:00" },
+            { name: "Chemistry Paper 1", date: "2025-05-19T09:00:00" },
+            { name: "English Literature Paper 2", date: "2025-05-20T09:00:00" },
+            { name: "Sociology Paper 2", date: "2025-05-20T11:00:00" },
+            { name: "Physics Paper 1", date: "2025-05-22T09:00:00" },
+            { name: "Economics Paper 2", date: "2025-05-22T11:00:00" },
+            { name: "English Language Paper 1", date: "2025-05-23T09:00:00" },
+            { name: "Mathematics Paper 2", date: "2025-06-04T09:00:00" },
+            { name: "English Language Paper 2", date: "2025-06-06T09:00:00" },
+            { name: "Geography Paper 2", date: "2025-06-06T11:00:00" },
+            { name: "Biology Paper 2", date: "2025-06-09T09:00:00" },
+            { name: "Mathematics Paper 3", date: "2025-06-11T09:00:00" },
+            { name: "Geography Paper 3", date: "2025-06-12T09:00:00" },
+            { name: "Chemistry Paper 2", date: "2025-06-13T09:00:00" },
+            { name: "Physics Paper 2", date: "2025-06-16T09:00:00" }
+        ];
+
+        function updateCountdowns() {
+            const examsContainer = document.getElementById('exams');
+            examsContainer.innerHTML = '';
+
+            exams.forEach(exam => {
+                const now = new Date();
+                const examDate = new Date(exam.date);
+                const timeDiff = examDate - now;
+
+                const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+                const examElement = document.createElement('div');
+                examElement.className = 'exam';
+
+                const titleElement = document.createElement('div');
+                titleElement.className = 'exam-title';
+                titleElement.textContent = exam.name;
+
+                const countdownElement = document.createElement('div');
+                countdownElement.className = 'countdown';
+
+                if (timeDiff > 0) {
+                    countdownElement.textContent = `Time remaining: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+                } else {
+                    countdownElement.textContent = 'Exam has started or already passed.';
+                }
+
+                examElement.appendChild(titleElement);
+                examElement.appendChild(countdownElement);
+                examsContainer.appendChild(examElement);
+            });
+        }
+
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
+    </script>
+</body>
+</html>
