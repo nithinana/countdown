@@ -1,232 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Countdown</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        h1 {
-            text-align: center;
-        }
-        .exam {
-            margin: 15px 0;
-            padding: 15px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: background 0.3s, border-color 0.3s;
-        }
-        .exam-title {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-            cursor: pointer;
-            color: #007bff;
-            text-decoration: underline;
-        }
-        .exam-title:hover {
-            color: #0056b3;
-        }
-        .countdown {
-            font-size: 1.1em;
-            color: #555;
-        }
-        .dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        .dark-mode .exam {
-            background: #1e1e1e;
-            border-color: #333;
-        }
-        .dark-mode .countdown {
-            color: #bbb;
-        }
-        .dark-mode-switch {
-            display: flex;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        .dark-mode-switch button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .dark-mode-switch button:hover {
-            background-color: #0056b3;
-        }
-        .view-toggle {
-            margin: 20px 0;
-            text-align: center;
-        }
-        .view-toggle button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .view-toggle button:hover {
-            background-color: #218838;
-        }
-        .half-term-divider {
-            text-align: center;
-            margin: 40px 0 20px;
-            font-size: 1.6em;
-            font-weight: bold;
-            color: #dc3545;
-        }
-        .dark-mode .half-term-divider {
-            color: #ff6b6b;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam Countdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .exam {
+      margin: 15px 0;
+      padding: 15px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .exam-title {
+      font-size: 1.2em;
+      margin-bottom: 5px;
+      display: block;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .exam-title:hover {
+      color: #0056b3;
+    }
+
+    .exam-date {
+      font-size: 0.95em;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .countdown {
+      font-size: 1.05em;
+      color: #555;
+    }
+
+    .dark-mode {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    .dark-mode .exam {
+      background: #1e1e1e;
+      border-color: #333;
+    }
+
+    .dark-mode .countdown,
+    .dark-mode .exam-date {
+      color: #bbb;
+    }
+
+    .dark-mode-switch,
+    .view-toggle {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .dark-mode-switch button,
+    .view-toggle button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .view-toggle button {
+      background-color: #28a745;
+    }
+
+    .dark-mode-switch button:hover {
+      background-color: #0056b3;
+    }
+
+    .view-toggle button:hover {
+      background-color: #218838;
+    }
+
+    .half-term-divider {
+      text-align: center;
+      margin: 40px 0 20px;
+      font-size: 1.6em;
+      font-weight: bold;
+      color: #dc3545;
+    }
+
+    .dark-mode .half-term-divider {
+      color: #ff6b6b;
+    }
+  </style>
 </head>
 <body>
-    <h1>Exam Countdown</h1>
+  <h1>Exam Countdown</h1>
 
-    <div class="dark-mode-switch">
-        <button id="darkModeToggle">Toggle Dark Mode</button>
-    </div>
+  <div class="dark-mode-switch">
+    <button id="darkModeToggle">Toggle Dark Mode</button>
+  </div>
 
-    <div class="view-toggle">
-        <button id="viewToggle">View all exams</button>
-    </div>
+  <div class="view-toggle">
+    <button id="viewToggle">View all exams</button>
+  </div>
 
-    <div id="exams"></div>
+  <div id="exams"></div>
 
-    <script>
-        const exams = [
-            { name: "Sociology Paper 1 (and luchis birthday)", date: "2025-05-09T09:00:00", subject: "Sociology", specLink: "/countdown/specs/Sociology.pdf" },
-            { name: "English Literature Paper 1", date: "2025-05-12T09:00:00", subject: "English Literature", specLink: "/countdown/specs/english-literature.PDF" },
-            { name: "Biology Paper 1", date: "2025-05-13T09:00:00", subject: "Biology", specLink: "/countdown/specs/Biology.pdf" },
-            { name: "Geography Paper 1", date: "2025-05-14T09:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
-            { name: "Economics Paper 1", date: "2025-05-14T11:00:00", subject: "Economics", specLink: "/countdown/specs/Economics.pdf" },
-            { name: "Mathematics Paper 1", date: "2025-05-15T13:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
-            { name: "Chemistry Paper 1", date: "2025-05-19T09:00:00", subject: "Chemistry", specLink: "/countdown/specs/Chemistry.pdf" },
-            { name: "English Literature Paper 2", date: "2025-05-20T09:00:00", subject: "English Literature", specLink: "/countdown/specs/english-literature.PDF" },
-            { name: "Sociology Paper 2", date: "2025-05-20T11:00:00", subject: "Sociology", specLink: "/countdown/specs/Sociology.pdf" },
-            { name: "Physics Paper 1", date: "2025-05-22T09:00:00", subject: "Physics", specLink: "/countdown/specs/Physics.pdf" },
-            { name: "Economics Paper 2", date: "2025-05-22T11:00:00", subject: "Economics", specLink: "/countdown/specs/Economics.pdf" },
-            { name: "English Language Paper 1", date: "2025-05-23T09:00:00", subject: "English Language", specLink: "/countdown/specs/english-language.PDF" },
-            { name: "Mathematics Paper 2", date: "2025-06-04T09:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
-            { name: "English Language Paper 2", date: "2025-06-06T09:00:00", subject: "English Language", specLink: "/countdown/specs/english-language.PDF" },
-            { name: "Geography Paper 2", date: "2025-06-06T11:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
-            { name: "Biology Paper 2", date: "2025-06-09T09:00:00", subject: "Biology", specLink: "/countdown/specs/Biology.pdf" },
-            { name: "Mathematics Paper 3", date: "2025-06-11T09:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
-            { name: "Geography Paper 3", date: "2025-06-12T09:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
-            { name: "Chemistry Paper 2", date: "2025-06-13T09:00:00", subject: "Chemistry", specLink: "/countdown/specs/Chemistry.pdf" },
-            { name: "Physics Paper 2", date: "2025-06-16T09:00:00", subject: "Physics", specLink: "/countdown/specs/Physics.pdf" }
-        ];
+  <script>
+    const exams = [
+      { name: "Sociology Paper 1 (and luchis birthday)", date: "2025-05-09T09:00:00", subject: "Sociology", specLink: "/countdown/specs/Sociology.pdf" },
+      { name: "English Literature Paper 1", date: "2025-05-12T09:00:00", subject: "English Literature", specLink: "/countdown/specs/english-literature.PDF" },
+      { name: "Biology Paper 1", date: "2025-05-13T09:00:00", subject: "Biology", specLink: "/countdown/specs/Biology.pdf" },
+      { name: "Geography Paper 1", date: "2025-05-14T09:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
+      { name: "Economics Paper 1", date: "2025-05-14T11:00:00", subject: "Economics", specLink: "/countdown/specs/Economics.pdf" },
+      { name: "Mathematics Paper 1", date: "2025-05-15T13:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
+      { name: "Chemistry Paper 1", date: "2025-05-19T09:00:00", subject: "Chemistry", specLink: "/countdown/specs/Chemistry.pdf" },
+      { name: "English Literature Paper 2", date: "2025-05-20T09:00:00", subject: "English Literature", specLink: "/countdown/specs/english-literature.PDF" },
+      { name: "Sociology Paper 2", date: "2025-05-20T11:00:00", subject: "Sociology", specLink: "/countdown/specs/Sociology.pdf" },
+      { name: "Physics Paper 1", date: "2025-05-22T09:00:00", subject: "Physics", specLink: "/countdown/specs/Physics.pdf" },
+      { name: "Economics Paper 2", date: "2025-05-22T11:00:00", subject: "Economics", specLink: "/countdown/specs/Economics.pdf" },
+      { name: "English Language Paper 1", date: "2025-05-23T09:00:00", subject: "English Language", specLink: "/countdown/specs/english-language.PDF" },
+      { name: "Mathematics Paper 2", date: "2025-06-04T09:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
+      { name: "English Language Paper 2", date: "2025-06-06T09:00:00", subject: "English Language", specLink: "/countdown/specs/english-language.PDF" },
+      { name: "Geography Paper 2", date: "2025-06-06T11:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
+      { name: "Biology Paper 2", date: "2025-06-09T09:00:00", subject: "Biology", specLink: "/countdown/specs/Biology.pdf" },
+      { name: "Mathematics Paper 3", date: "2025-06-11T09:00:00", subject: "Mathematics", specLink: "/countdown/specs/Mathematics.pdf" },
+      { name: "Geography Paper 3", date: "2025-06-12T09:00:00", subject: "Geography", specLink: "/countdown/specs/Geography.pdf" },
+      { name: "Chemistry Paper 2", date: "2025-06-13T09:00:00", subject: "Chemistry", specLink: "/countdown/specs/Chemistry.pdf" },
+      { name: "Physics Paper 2", date: "2025-06-16T09:00:00", subject: "Physics", specLink: "/countdown/specs/Physics.pdf" }
+    ];
 
-        const examsContainer = document.getElementById('exams');
-        const viewToggleButton = document.getElementById('viewToggle');
-        let viewAllExams = true;
+    const examsContainer = document.getElementById('exams');
+    const viewToggleButton = document.getElementById('viewToggle');
+    let viewAllExams = true;
 
-        function groupBySubject() {
-            return exams.reduce((acc, exam) => {
-                if (!acc[exam.subject]) acc[exam.subject] = [];
-                acc[exam.subject].push(exam);
-                return acc;
-            }, {});
-        }
+    function formatDate(dateStr) {
+      const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+      return new Date(dateStr).toLocaleString('en-GB', options);
+    }
 
-        function updateCountdowns() {
-            examsContainer.innerHTML = '';
-            const groupedExams = groupBySubject();
+    function groupBySubject() {
+      return exams.reduce((acc, exam) => {
+        if (!acc[exam.subject]) acc[exam.subject] = [];
+        acc[exam.subject].push(exam);
+        return acc;
+      }, {});
+    }
 
-            if (viewAllExams) {
-                exams.forEach((exam) => {
-                    createExamElement(exam);
+    function updateCountdowns() {
+      examsContainer.innerHTML = '';
+      const groupedExams = groupBySubject();
 
-                    if (exam.name === "English Language Paper 1") {
-                        const halfTermDiv = document.createElement('div');
-                        halfTermDiv.className = 'half-term-divider';
-                        halfTermDiv.textContent = '––– HALF TERM –––';
-                        examsContainer.appendChild(halfTermDiv);
-                    }
-                });
-            } else {
-                for (const subject in groupedExams) {
-                    const subjectContainer = document.createElement('div');
-                    const subjectTitle = document.createElement('h2');
-                    subjectTitle.textContent = subject;
-                    subjectContainer.appendChild(subjectTitle);
+      if (viewAllExams) {
+        exams.forEach((exam) => {
+          createExamElement(exam);
+          if (exam.name === "English Language Paper 1") {
+            const halfTermDiv = document.createElement('div');
+            halfTermDiv.className = 'half-term-divider';
+            halfTermDiv.textContent = '––– HALF TERM –––';
+            examsContainer.appendChild(halfTermDiv);
+          }
+        });
+      } else {
+        for (const subject in groupedExams) {
+          const subjectContainer = document.createElement('div');
+          const subjectTitle = document.createElement('h2');
+          subjectTitle.textContent = subject;
+          subjectContainer.appendChild(subjectTitle);
 
-                    groupedExams[subject].forEach((exam) => {
-                        createExamElement(exam, subjectContainer);
-
-                        if (exam.name === "English Language Paper 1") {
-                            const halfTermDiv = document.createElement('div');
-                            halfTermDiv.className = 'half-term-divider';
-                            halfTermDiv.textContent = '––– HALF TERM –––';
-                            subjectContainer.appendChild(halfTermDiv);
-                        }
-                    });
-
-                    examsContainer.appendChild(subjectContainer);
-                }
+          groupedExams[subject].forEach((exam) => {
+            createExamElement(exam, subjectContainer);
+            if (exam.name === "English Language Paper 1") {
+              const halfTermDiv = document.createElement('div');
+              halfTermDiv.className = 'half-term-divider';
+              halfTermDiv.textContent = '––– HALF TERM –––';
+              subjectContainer.appendChild(halfTermDiv);
             }
+          });
+
+          examsContainer.appendChild(subjectContainer);
         }
+      }
+    }
 
-        function createExamElement(exam, container = examsContainer) {
-            const now = new Date();
-            const examDate = new Date(exam.date);
-            const timeDiff = examDate - now;
+    function createExamElement(exam, container = examsContainer) {
+      const now = new Date();
+      const examDate = new Date(exam.date);
+      const timeDiff = examDate - now;
 
-            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+      const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-            const examElement = document.createElement('div');
-            examElement.className = 'exam';
+      const examElement = document.createElement('div');
+      examElement.className = 'exam';
 
-            const titleElement = document.createElement('a');
-            titleElement.className = 'exam-title';
-            titleElement.textContent = exam.name;
-            titleElement.href = exam.specLink;
-            titleElement.target = '_blank';
+      const titleElement = document.createElement('a');
+      titleElement.className = 'exam-title';
+      titleElement.textContent = `${exam.name} (${formatDate(exam.date)})`;
+      titleElement.href = exam.specLink;
+      titleElement.target = '_blank';
 
-            const countdownElement = document.createElement('div');
-            countdownElement.className = 'countdown';
+      const countdownElement = document.createElement('div');
+      countdownElement.className = 'countdown';
+      countdownElement.textContent = timeDiff > 0
+        ? `Time remaining: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
+        : 'Exam has started or already passed.';
 
-            countdownElement.textContent = timeDiff > 0
-                ? `Time remaining: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
-                : 'Exam has started or already passed.';
+      examElement.appendChild(titleElement);
+      examElement.appendChild(countdownElement);
+      container.appendChild(examElement);
+    }
 
-            examElement.appendChild(titleElement);
-            examElement.appendChild(countdownElement);
-            container.appendChild(examElement);
-        }
+    updateCountdowns();
+    setInterval(updateCountdowns, 1000);
 
-        updateCountdowns();
-        setInterval(updateCountdowns, 1000);
+    viewToggleButton.addEventListener('click', () => {
+      viewAllExams = !viewAllExams;
+      viewToggleButton.textContent = viewAllExams ? 'View all exams' : 'View exams by subject';
+      updateCountdowns();
+    });
 
-        viewToggleButton.addEventListener('click', () => {
-            viewAllExams = !viewAllExams;
-            viewToggleButton.textContent = viewAllExams ? 'View all exams' : 'View exams by subject';
-            updateCountdowns();
-        });
-
-        document.getElementById('darkModeToggle').addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-    </script>
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
 </body>
 </html>
