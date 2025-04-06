@@ -85,6 +85,16 @@
         .view-toggle button:hover {
             background-color: #218838;
         }
+        .half-term-divider {
+            text-align: center;
+            margin: 40px 0 20px;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .dark-mode .half-term-divider {
+            color: #ff6b6b;
+        }
     </style>
 </head>
 <body>
@@ -126,18 +136,14 @@
 
         const examsContainer = document.getElementById('exams');
         const viewToggleButton = document.getElementById('viewToggle');
-        let viewAllExams = true; // Initially view all exams
+        let viewAllExams = true;
 
         function groupBySubject() {
-            const groupedExams = exams.reduce((acc, exam) => {
-                if (!acc[exam.subject]) {
-                    acc[exam.subject] = [];
-                }
+            return exams.reduce((acc, exam) => {
+                if (!acc[exam.subject]) acc[exam.subject] = [];
                 acc[exam.subject].push(exam);
                 return acc;
             }, {});
-
-            return groupedExams;
         }
 
         function updateCountdowns() {
@@ -145,8 +151,15 @@
             const groupedExams = groupBySubject();
 
             if (viewAllExams) {
-                exams.forEach(exam => {
+                exams.forEach((exam) => {
                     createExamElement(exam);
+
+                    if (exam.name === "English Language Paper 1") {
+                        const halfTermDiv = document.createElement('div');
+                        halfTermDiv.className = 'half-term-divider';
+                        halfTermDiv.textContent = '––– HALF TERM –––';
+                        examsContainer.appendChild(halfTermDiv);
+                    }
                 });
             } else {
                 for (const subject in groupedExams) {
@@ -155,8 +168,15 @@
                     subjectTitle.textContent = subject;
                     subjectContainer.appendChild(subjectTitle);
 
-                    groupedExams[subject].forEach(exam => {
+                    groupedExams[subject].forEach((exam) => {
                         createExamElement(exam, subjectContainer);
+
+                        if (exam.name === "English Language Paper 1") {
+                            const halfTermDiv = document.createElement('div');
+                            halfTermDiv.className = 'half-term-divider';
+                            halfTermDiv.textContent = '––– HALF TERM –––';
+                            subjectContainer.appendChild(halfTermDiv);
+                        }
                     });
 
                     examsContainer.appendChild(subjectContainer);
@@ -180,17 +200,15 @@
             const titleElement = document.createElement('a');
             titleElement.className = 'exam-title';
             titleElement.textContent = exam.name;
-            titleElement.href = exam.specLink; // Add the specification link
-            titleElement.target = '_blank'; // Open in a new tab
+            titleElement.href = exam.specLink;
+            titleElement.target = '_blank';
 
             const countdownElement = document.createElement('div');
             countdownElement.className = 'countdown';
 
-            if (timeDiff > 0) {
-                countdownElement.textContent = `Time remaining: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
-            } else {
-                countdownElement.textContent = 'Exam has started or already passed.';
-            }
+            countdownElement.textContent = timeDiff > 0
+                ? `Time remaining: ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`
+                : 'Exam has started or already passed.';
 
             examElement.appendChild(titleElement);
             examElement.appendChild(countdownElement);
@@ -200,16 +218,13 @@
         updateCountdowns();
         setInterval(updateCountdowns, 1000);
 
-        // Toggle view
         viewToggleButton.addEventListener('click', () => {
             viewAllExams = !viewAllExams;
             viewToggleButton.textContent = viewAllExams ? 'View all exams' : 'View exams by subject';
             updateCountdowns();
         });
 
-        // Dark mode toggle
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.addEventListener('click', () => {
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
         });
     </script>
